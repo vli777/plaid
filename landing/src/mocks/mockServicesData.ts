@@ -1,3 +1,5 @@
+import { ServicePanel } from "@/types/services"
+
 const paragraphs = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a odio porttitor, egestas nunc et, fermentum sapien.",
   "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
@@ -14,22 +16,6 @@ function randomContent(): string {
     html += `<p>${paragraphs[idx]}</p>`
   }
   return html
-}
-
-// assumed api response structure e.g. from standard CMS
-export type Section = {
-  id: string
-  title: string
-  content: string   
-  defaultExpanded: boolean
-}
-
-export type ServicePanel = {
-  id: string
-  order: number
-  title: string
-  subtitle: string
-  sections: Section[]
 }
 
 export const services: ServicePanel[] = [
