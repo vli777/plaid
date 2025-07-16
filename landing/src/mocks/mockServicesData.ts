@@ -48,7 +48,19 @@ export const services: ServicePanel[] = [
         title: "Performance optimization",
         content: randomContent(),
         defaultExpanded: false
-      }
+      },
+      {
+        id: "performance-optimization2",
+        title: "Performance optimization",
+        content: randomContent(),
+        defaultExpanded: false
+      },
+        {
+        id: "animation2",
+        title: "Animation",
+        content: randomContent(),
+        defaultExpanded: false
+      },
     ]
   },
   {
