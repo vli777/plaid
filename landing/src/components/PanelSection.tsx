@@ -12,7 +12,7 @@ export default function PanelSection({
   const [open, setOpen] = useState(defaultExpanded);
 
   return (
-    <div className="border-t border-stone-200 last:border-b last:border-stone-200 py-6">
+    <div className="border-stone-200 last:border-b last:border-stone-200 py-6">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -23,8 +23,10 @@ export default function PanelSection({
       </button>
 
       {open && (
-        <div className="pt-4 pl-0 pb-4 text-sm font-medium prose prose-sm text-stone-400">
-          {parse(content)}
+        <div className="pt-4 pb-4">
+          <div className="w-[60%] text-sm font-medium prose prose-sm text-stone-400">
+            {parse(content || "")}
+          </div>
         </div>
       )}
     </div>
