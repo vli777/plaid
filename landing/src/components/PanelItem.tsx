@@ -7,14 +7,23 @@ export interface PanelItemProps {
 
 export default function PanelItem({ panel }: PanelItemProps) {
   return (
-    <div className="mb-12">
-      {/* TO-DO: title should be extracted to left column in 2 col layout */}
-      <h2 className="text-3xl font-extrabold uppercase">{panel.title}</h2>
-      {panel.subtitle && (
-        <p className="mb-6 font-bold text-stone-600">{panel.subtitle}</p>
-      )}
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16">
+      <div className="md:col-span-4 flex flex-col justify-between">
+        <h1 className="text-6xl md:text-8xl  tracking-tight leading-[0.8] font-extrabold uppercase ">
+          {panel.title}
+        </h1>
 
-      <div className="divide-y divide-stone-200">
+        <div className="text-[5rem] md:text-[7rem] font-bold leading-none tracking-tighter">
+          {String(panel.order).padStart(2, "0")}
+        </div>
+      </div>
+
+      <div className="md:col-span-8 divide-y divide-stone-200">
+        {panel.subtitle && (
+          <p className="pb-4 text-md font-bold  text-stone-600">
+            {panel.subtitle}
+          </p>
+        )}
         {panel.sections.map((section: Section) => (
           <PanelSection key={section.id} {...section} />
         ))}
