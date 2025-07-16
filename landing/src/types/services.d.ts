@@ -3,13 +3,13 @@ export type Section = {
   id: string
   title: string
   content: string   
-  defaultExpanded: boolean
+  defaultExpanded?: boolean
 }
 
 export type ServicePanel = {
   id: string
   order: number
   title: string
-  subtitle: string
+  subtitle?: string
   sections: Section[]
 }
