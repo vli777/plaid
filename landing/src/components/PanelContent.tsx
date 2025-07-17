@@ -8,7 +8,6 @@ import { useInView, UseInViewOptions } from "framer-motion";
 export interface PanelContentProps {
   panel: ServicePanel;
   index: number;
-  // titleRef: React.RefObject<HTMLHeadingElement | null>;
   scrollRef: React.RefObject<HTMLDivElement | null>;
   titleHeight: number;
   onInView?: (index: number) => void;
@@ -22,23 +21,33 @@ export default function PanelContent({
   onInView,
 }: PanelContentProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-
+  
   const opts: UseInViewOptions = {
     root: scrollRef,
     margin: `-${titleHeight}px 0px 0px 0px` as UseInViewOptions["margin"],
-    amount: 0,
+    amount: 0.5,
   };
 
   const isInView = useInView(subtitleRef, opts);
 
-  useEffect(() => {
-    if (isInView) {
+  useEffect(() => {    
+    if (typeof window !== 'undefined' && window.innerWidth >= 768 && isInView) {      
       onInView?.(index);
     }
   }, [isInView, index, onInView]);
 
   return (
-    <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col divide-y divide-stone-200 pt-8">
+    <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col divide-y divide-stone-200 pt-8">    
+      <div className="block md:hidden mb-4">
+        <div className="flex items-end justify-between">
+          <h1 className="text-4xl font-extrabold uppercase">
+            {panel.title}
+          </h1>
+          <span className="text-5xl font-bold leading-none tracking-tighter">
+            {panel.order < 10 ? `0${panel.order}` : panel.order}
+          </span>
+        </div>
+      </div>
       {panel.subtitle && (
         <p className="pb-4 text-md font-bold text-stone-600" ref={subtitleRef}>
           {panel.subtitle}

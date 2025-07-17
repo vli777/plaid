@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useLayoutEffect, useRef } from "react";
 import { ServicePanel } from "@/types/services";
 import PanelTitle from "./PanelTitle";
@@ -22,7 +23,9 @@ export default function PanelList({ panels }: PanelListProps) {
 
   return (
     <div className="flex h-screen">
-      <PanelTitle panel={panels[activeIndex]} titleRef={titleRef} />
+      <div className="hidden md:block">
+        <PanelTitle panel={panels[activeIndex]} titleRef={titleRef} />
+      </div>
 
       <div
         ref={scrollRef}
@@ -33,7 +36,6 @@ export default function PanelList({ panels }: PanelListProps) {
             <PanelContent
               panel={panel}
               index={idx}
-              
               scrollRef={scrollRef}
               titleHeight={titleHeight}
               onInView={(i) => setActiveIndex(i)}
