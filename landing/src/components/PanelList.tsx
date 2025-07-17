@@ -20,7 +20,7 @@ export default function PanelList({ panels }: PanelListProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [titleHeight, setTitleHeight] = useState(0);
-  const [scrollY, setScrollY] = useState(0);
+  const [, setScrollY] = useState(0);
   const [scrollDirection, setScrollDirection] = useState<"up" | "down">("down");
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
