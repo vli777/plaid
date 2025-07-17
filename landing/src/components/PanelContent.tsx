@@ -10,8 +10,8 @@ export interface PanelContentProps {
   index: number;
   scrollRef: React.RefObject<HTMLDivElement | null>;
   titleHeight: number;
-  scrollDirection: 'up' | 'down';
-  onCross: (index: number, direction: 'up' | 'down') => void;
+  scrollDirection: "up" | "down";
+  onCross: (index: number, direction: "up" | "down") => void;
 }
 
 export default function PanelContent({
@@ -23,7 +23,7 @@ export default function PanelContent({
   onCross,
 }: PanelContentProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  
+
   const opts: UseInViewOptions = {
     root: scrollRef,
     margin: `-${titleHeight}px 0px 0px 0px` as UseInViewOptions["margin"],
@@ -32,16 +32,14 @@ export default function PanelContent({
 
   const isInView = useInView(subtitleRef, opts);
 
-  // Track previous inView state to detect crossing
   const prevInView = useRef(isInView);
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
       if (prevInView.current !== isInView) {
-        // Only fire on the correct crossing event
-        if (isInView && scrollDirection === 'down') {
-          onCross(index, 'down');
-        } else if (!isInView && scrollDirection === 'up') {
-          onCross(index, 'up');
+        if (isInView && scrollDirection === "down") {
+          onCross(index, "down");
+        } else if (!isInView && scrollDirection === "up") {
+          onCross(index, "up");
         }
         prevInView.current = isInView;
       }
@@ -49,25 +47,33 @@ export default function PanelContent({
   }, [isInView, index, onCross, scrollDirection]);
 
   return (
-    <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col divide-y divide-stone-200 pt-8">    
-      <div className="block md:hidden mb-4">
-        <div className="flex items-end justify-between">
-          <h1 className="text-4xl font-extrabold uppercase">
-            {panel.title}
-          </h1>
-          <span className="text-5xl font-bold leading-none tracking-tighter">
-            {panel.order < 10 ? `0${panel.order}` : panel.order}
-          </span>
+    <div className="w-full h-full">
+      <div
+        className="max-w-[640px] ml-auto flex flex-col divide-y divide-stone-200 h-full p-8 pt-24"
+        style={{ background: "var(--background)" }}
+      >
+        <div className="block md:hidden mb-4">
+          <div className="flex items-end justify-between">
+            <h1 className="text-4xl font-extrabold uppercase">{panel.title}</h1>
+            <span className="text-5xl font-bold leading-none tracking-tighter">
+              {panel.order < 10 ? `0${panel.order}` : panel.order}
+            </span>
+          </div>
         </div>
+        {panel.subtitle && (
+          <p
+            className="pb-4 text-md font-bold text-stone-600"
+            ref={subtitleRef}
+          >
+            {panel.subtitle}
+          </p>
+        )}
+        {panel.sections.map((section: Section) => (
+          <div key={section.id}>
+            <PanelSection {...section} />
+          </div>
+        ))}
       </div>
-      {panel.subtitle && (
-        <p className="pb-4 text-md font-bold text-stone-600" ref={subtitleRef}>
-          {panel.subtitle}
-        </p>
-      )}
-      {panel.sections.map((section: Section) => (
-        <PanelSection key={section.id} {...section} />
-      ))}
     </div>
   );
 }
