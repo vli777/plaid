@@ -1,3 +1,5 @@
+"use client";
+
 import { ServicePanel, Section } from "@/types/services";
 import PanelSection from "./PanelSection";
 import { useRef, useEffect } from "react";
@@ -6,39 +8,37 @@ import { useInView, UseInViewOptions } from "framer-motion";
 export interface PanelContentProps {
   panel: ServicePanel;
   index: number;
-  onInView?: (index: number, inView: boolean) => void;
-  centerY: number;
+  // titleRef: React.RefObject<HTMLHeadingElement | null>;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+  titleHeight: number;
+  onInView?: (index: number) => void;
 }
 
 export default function PanelContent({
   panel,
   index,
+  scrollRef,
+  titleHeight,
   onInView,
-  centerY,
 }: PanelContentProps) {
-  const subtitleRef = useRef<HTMLParagraphElement | null>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
 
-  let margin = "-50% 0px -50% 0px";
-  if (centerY > 0 && typeof window !== "undefined") {
-    const leeway = 32;
-    const topMargin = -(centerY - leeway);
-    const bottomMargin = -(window.innerHeight - centerY - leeway);
-    margin = `${topMargin}px 0px ${bottomMargin}px 0px`;
-  }
+  const opts: UseInViewOptions = {
+    root: scrollRef,
+    margin: `-${titleHeight}px 0px 0px 0px` as UseInViewOptions["margin"],
+    amount: 0,
+  };
 
-  const isInView = useInView(subtitleRef, {
-    margin: margin as UseInViewOptions["margin"],
-    amount: "some",
-  });
+  const isInView = useInView(subtitleRef, opts);
 
   useEffect(() => {
-    if (onInView) {
-      onInView(index, isInView);
+    if (isInView) {
+      onInView?.(index);
     }
   }, [isInView, index, onInView]);
 
   return (
-    <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col overflow-y-auto divide-y divide-stone-200 my-2">
+    <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col divide-y divide-stone-200 pt-8">
       {panel.subtitle && (
         <p className="pb-4 text-md font-bold text-stone-600" ref={subtitleRef}>
           {panel.subtitle}
