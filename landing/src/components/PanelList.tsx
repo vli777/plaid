@@ -10,8 +10,7 @@ interface PanelListProps {
 }
 
 export default function PanelList({ panels }: PanelListProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [inViewStates, setInViewStates] = useState<boolean[]>(() => panels.map(() => false));
+  const [activeIndex, setActiveIndex] = useState(0);  
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [titleHeight, setTitleHeight] = useState(0);
@@ -24,8 +23,7 @@ export default function PanelList({ panels }: PanelListProps) {
       setTitleHeight(titleRef.current.getBoundingClientRect().height);
     }
   }, []);
-
-  // Track scroll position and direction
+  
   useEffect(() => {
     const scrollEl = scrollRef.current;
     if (!scrollEl) return;
@@ -39,8 +37,7 @@ export default function PanelList({ panels }: PanelListProps) {
     scrollEl.addEventListener('scroll', onScroll);
     return () => scrollEl.removeEventListener('scroll', onScroll);
   }, []);
-
-  // Smooth scroll to active panel when activeIndex changes (desktop only)
+  
   useEffect(() => {
     if (typeof window !== 'undefined' && window.innerWidth >= 768) {
       const panelNode = panelRefs.current[activeIndex];
@@ -50,7 +47,6 @@ export default function PanelList({ panels }: PanelListProps) {
     }
   }, [activeIndex]);
 
-  // Only update activeIndex on crossing event
   const handleCross = useCallback((idx: number, direction: 'up' | 'down') => {
     if (direction === 'down') {
       setActiveIndex(idx);
