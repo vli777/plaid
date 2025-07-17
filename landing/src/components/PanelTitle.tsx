@@ -3,11 +3,11 @@ import { forwardRef } from "react";
 
 export interface PanelTitleProps {
   panel: ServicePanel;
-  titleRef?: React.RefObject<HTMLHeadingElement>;
+  titleRef?: React.RefObject<HTMLHeadingElement | null>;
 }
 
 const PanelTitle = forwardRef<HTMLHeadingElement, PanelTitleProps>(
-  ({ panel, titleRef }, _) => {
+  ({ panel, titleRef }, ref) => {
     return (
       <div
         className="
