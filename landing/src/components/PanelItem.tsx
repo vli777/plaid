@@ -7,26 +7,29 @@ export interface PanelItemProps {
 
 export default function PanelItem({ panel }: PanelItemProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16">
-      <div className="md:col-span-4 flex flex-col justify-between">
-        <h1 className="text-6xl md:text-8xl  tracking-tight leading-[0.8] font-extrabold uppercase ">
-          {panel.title}
-        </h1>
+    <div className="snap-start h-screen max-w-[2560px] mx-auto px-4 md:px-8">
+      <div className="h-full flex flex-col md:flex-row gap-8">
+        
+        <div className="w-full md:w-[360px] flex flex-col justify-between h-full">
+          <h1 className="text-6xl md:text-8xl tracking-tight leading-[0.8] font-extrabold uppercase">
+            {panel.title}
+          </h1>
 
-        <div className="text-[5rem] md:text-[7rem] font-bold leading-none tracking-tighter">
-          {String(panel.order).padStart(2, "0")}
+          <div className="text-[5rem] md:text-[7rem] font-bold leading-none tracking-tighter text-stone-200">
+            {String(panel.order).padStart(2, "0")}
+          </div>
         </div>
-      </div>
 
-      <div className="md:col-span-8 divide-y divide-stone-200">
-        {panel.subtitle && (
-          <p className="pb-4 text-md font-bold  text-stone-600">
-            {panel.subtitle}
-          </p>
-        )}
-        {panel.sections.map((section: Section) => (
-          <PanelSection key={section.id} {...section} />
-        ))}
+        <div className="w-full md:w-[640px] md:ml-auto overflow-auto divide-y divide-stone-200">
+          {panel.subtitle && (
+            <p className="pb-4 text-md font-bold text-stone-600">
+              {panel.subtitle}
+            </p>
+          )}
+          {panel.sections.map((section: Section) => (
+            <PanelSection key={section.id} {...section} />
+          ))}
+        </div>
       </div>
     </div>
   );
