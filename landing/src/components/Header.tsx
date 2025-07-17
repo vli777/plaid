@@ -18,8 +18,10 @@ export default function Header({ title, cta, className = "" }: HeaderProps) {
   return (
     <header
       className={`
+        fixed top-0 left-0 w-full z-50
         flex items-center justify-between
-        px-8 py-4 my-6
+        px-8 my-8
+        bg-transparent
         ${className}
       `}
     >
@@ -33,7 +35,7 @@ export default function Header({ title, cta, className = "" }: HeaderProps) {
         >
           <circle cx="8" cy="8" r="6" fill="currentColor" />
         </svg>
-        <h1 className="font-bold text-md">{title}</h1>
+        <h1 className="font-bold text-sm">{title}</h1>
       </div>
 
       {cta && (
