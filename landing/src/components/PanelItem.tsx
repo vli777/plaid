@@ -16,7 +16,7 @@ export default function PanelItem({ panel }: PanelItemProps) {
           </h1>
 
           <div className="text-[5rem] md:text-[7rem] font-bold leading-none tracking-tighter text-stone-200">
-            {String(panel.order).padStart(2, "0")}
+            {panel.order < 10 ? `0${panel.order}` : panel.order}
           </div>
         </div>
 
