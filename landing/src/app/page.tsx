@@ -1,3 +1,5 @@
+import { HeaderProps } from "@/components/Header";
+import LandingPage from "@/components/LandingPage";
 import PanelList from "@/components/PanelList";
 
 export default async function Home() {
@@ -14,12 +16,13 @@ export default async function Home() {
   }
   const data = await res.json();
 
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <PanelList panels={data} />
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
-    </div>
-  );
+   const headerData: HeaderProps = {
+    title: 'Our services',
+    cta: {
+      label: "Let’s work together",
+      href: '#contact',
+    },
+  }
+
+    return <LandingPage header={headerData} panels={data} />
 }
