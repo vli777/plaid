@@ -8,11 +8,13 @@ export interface PanelItemProps {
 
 export default function PanelItem({ panel }: PanelItemProps) {
   return (
-    <div className="snap-start h-screen max-w-[2560px] mx-auto px-4 md:px-8">
-      <div className="h-full flex flex-col md:flex-row gap-8">
-        <PanelTitle panel={panel} />
-        <PanelContent panel={panel} />
-      </div>
+    <div
+      className="snap-start h-full relative                
+        max-w-[2560px] mx-auto
+        px-4 md:px-8"
+    >
+      <PanelTitle panel={panel} />
+      <PanelContent panel={panel} />
     </div>
   );
 }
