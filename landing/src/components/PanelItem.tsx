@@ -9,7 +9,8 @@ export interface PanelItemProps {
   titleRef: RefObject<HTMLHeadingElement>;
   scrollRef: RefObject<HTMLDivElement>;
   titleHeight: number;
-  onInView: (index: number) => void;
+  onCross: (index: number, direction: "up" | "down") => void;
+  scrollDirection: "up" | "down";
 }
 
 export default function PanelItem({
@@ -18,7 +19,8 @@ export default function PanelItem({
   titleRef,
   scrollRef,
   titleHeight,
-  onInView,
+  onCross,
+  scrollDirection,
 }: PanelItemProps) {
   return (
     <div
@@ -32,7 +34,8 @@ export default function PanelItem({
         index={index}        
         scrollRef={scrollRef}
         titleHeight={titleHeight}
-        onInView={onInView}
+        scrollDirection={scrollDirection}
+        onCross={onCross}
       />
     </div>
   );
