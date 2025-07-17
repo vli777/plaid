@@ -1,6 +1,5 @@
 import { HeaderProps } from "@/components/Header";
 import LandingPage from "@/components/LandingPage";
-import PanelList from "@/components/PanelList";
 
 export default async function Home() {
   const base = process.env.NEXT_PUBLIC_BASE_URL
@@ -16,13 +15,13 @@ export default async function Home() {
   }
   const data = await res.json();
 
-   const headerData: HeaderProps = {
-    title: 'Our services',
+  const headerData: HeaderProps = {
+    title: "Our services",
     cta: {
       label: "Let’s work together",
-      href: '#contact',
+      href: "#contact",
     },
-  }
+  };
 
-    return <LandingPage header={headerData} panels={data} />
+  return <LandingPage header={headerData} panels={data} />;
 }
