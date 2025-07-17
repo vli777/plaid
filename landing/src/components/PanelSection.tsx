@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import parse from "html-react-parser";
-import { Section } from "@/types/services";
+import { AnimatePresence, motion } from "framer-motion";
+import type { Section } from "@/types/services";
 
 export default function PanelSection({
   title,
@@ -22,13 +23,24 @@ export default function PanelSection({
         <span className="ml-4 text-2xl text-stone-600">{open ? "−" : "+"}</span>
       </button>
 
-      {open && (
-        <div className="pt-4 pb-4">
-          <div className="w-[60%] text-sm font-medium prose prose-sm text-stone-400">
-            {parse(content || "")}
-          </div>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="pt-4 pb-4">
+              <div className="w-[60%] text-sm font-medium prose prose-sm text-stone-400">
+                {parse(content || "")}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
