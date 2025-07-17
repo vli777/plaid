@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef, useCallback, useEffect } from "react";
 import { ServicePanel } from "@/types/services";
 import PanelTitle from "./PanelTitle";
 import PanelContent from "./PanelContent";
@@ -11,13 +11,51 @@ interface PanelListProps {
 
 export default function PanelList({ panels }: PanelListProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [inViewStates, setInViewStates] = useState<boolean[]>(() => panels.map(() => false));
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [titleHeight, setTitleHeight] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
     if (titleRef.current) {
       setTitleHeight(titleRef.current.getBoundingClientRect().height);
+    }
+  }, []);
+
+  // Track scroll position and direction
+  useEffect(() => {
+    const scrollEl = scrollRef.current;
+    if (!scrollEl) return;
+    let lastY = scrollEl.scrollTop;
+    const onScroll = () => {
+      const y = scrollEl.scrollTop;
+      setScrollDirection(y > lastY ? 'down' : 'up');
+      setScrollY(y);
+      lastY = y;
+    };
+    scrollEl.addEventListener('scroll', onScroll);
+    return () => scrollEl.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Smooth scroll to active panel when activeIndex changes (desktop only)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+      const panelNode = panelRefs.current[activeIndex];
+      if (panelNode) {
+        panelNode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [activeIndex]);
+
+  // Only update activeIndex on crossing event
+  const handleCross = useCallback((idx: number, direction: 'up' | 'down') => {
+    if (direction === 'down') {
+      setActiveIndex(idx);
+    } else if (direction === 'up' && idx > 0) {
+      setActiveIndex(idx - 1);
     }
   }, []);
 
@@ -32,13 +70,18 @@ export default function PanelList({ panels }: PanelListProps) {
         className="flex-1 ml-0 md:ml-[360px] px-8 md:px-8 overflow-y-auto py-6"
       >
         {panels.map((panel, idx) => (
-          <div key={panel.id} className="h-screen py-6 snap-start">
+          <div
+            key={panel.id}
+            className="h-screen py-6 snap-start"
+            ref={el => { panelRefs.current[idx] = el; }}
+          >
             <PanelContent
               panel={panel}
               index={idx}
               scrollRef={scrollRef}
               titleHeight={titleHeight}
-              onInView={(i) => setActiveIndex(i)}
+              scrollDirection={scrollDirection}
+              onCross={handleCross}
             />
           </div>
         ))}

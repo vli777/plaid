@@ -10,7 +10,8 @@ export interface PanelContentProps {
   index: number;
   scrollRef: React.RefObject<HTMLDivElement | null>;
   titleHeight: number;
-  onInView?: (index: number) => void;
+  scrollDirection: 'up' | 'down';
+  onCross: (index: number, direction: 'up' | 'down') => void;
 }
 
 export default function PanelContent({
@@ -18,7 +19,8 @@ export default function PanelContent({
   index,
   scrollRef,
   titleHeight,
-  onInView,
+  scrollDirection,
+  onCross,
 }: PanelContentProps) {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   
@@ -30,11 +32,21 @@ export default function PanelContent({
 
   const isInView = useInView(subtitleRef, opts);
 
-  useEffect(() => {    
-    if (typeof window !== 'undefined' && window.innerWidth >= 768 && isInView) {      
-      onInView?.(index);
+  // Track previous inView state to detect crossing
+  const prevInView = useRef(isInView);
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 768) {
+      if (prevInView.current !== isInView) {
+        // Only fire on the correct crossing event
+        if (isInView && scrollDirection === 'down') {
+          onCross(index, 'down');
+        } else if (!isInView && scrollDirection === 'up') {
+          onCross(index, 'up');
+        }
+        prevInView.current = isInView;
+      }
     }
-  }, [isInView, index, onInView]);
+  }, [isInView, index, onCross, scrollDirection]);
 
   return (
     <div className="w-full md:w-[640px] md:ml-auto h-full flex flex-col divide-y divide-stone-200 pt-8">    
