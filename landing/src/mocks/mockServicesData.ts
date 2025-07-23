@@ -41,7 +41,7 @@ export const services: ServicePanel[] = [
         id: "landing-pages",
         title: "Landing pages",
         content: randomContent(),
-        defaultExpanded: false
+        defaultExpanded: true
       },
       {
         id: "performance-optimization",
